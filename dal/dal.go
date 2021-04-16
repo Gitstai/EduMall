@@ -17,7 +17,7 @@ const (
 var EduDB *gorm.DB
 
 func InitDB() error {
-	dsn := fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8&parseTime=true", USERNAME, PASSWORD, HOST, DBName)
+	dsn := fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8&parseTime=True&loc=Local", USERNAME, PASSWORD, HOST, DBName)
 	var err error
 	EduDB, err = gorm.Open("mysql", dsn)
 	if err != nil {

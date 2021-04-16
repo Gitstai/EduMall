@@ -15,7 +15,6 @@ func GetUserInfo(c *gin.Context) {
 		ErrorHandler(c, config.ErrCodeErrBusinessException, "查询出错")
 		return
 	}
-	logs.Info("success!!!!!")
 	DataHandler(c, info)
 	return
 }
