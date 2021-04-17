@@ -12,14 +12,18 @@ import (
 )
 
 func GetUserInfo(c *gin.Context) {
-	id := int64(1)
-	info, err := model.GetTUserInfo(&model.TUser{Id: id})
-	if err != nil {
-		logs.Error("func=%v, err=%v", "model.GetTUserInfo", err)
-		ErrorHandler(c, config.ErrCodeErrBusinessException, "查询出错")
+	user := GetUser(c)
+	if user == nil || user.Id <= 0 {
+		ErrorHandler(c, config.ErrCodeErrREQParamInvalid, config.ErrMsgREQParamInvalid)
 		return
 	}
-	DataHandler(c, info)
+	//info, err := model.GetTUserInfo(&model.TUser{Id: user.Id})
+	//if err != nil {
+	//	logs.Logger.Errorf("func=%v, err=%v", "model.GetTUserInfo", err)
+	//	ErrorHandler(c, config.ErrCodeErrBusinessException, "查询出错")
+	//	return
+	//}
+	DataHandler(c, user)
 	return
 }
 
@@ -28,7 +32,7 @@ func Login(c *gin.Context) {
 	req := new(dto.LoginRequest)
 	err := c.ShouldBindWith(req, binding.Form)
 	if err != nil {
-		logs.Error("req err:%v", err)
+		logs.Logger.Errorf("req err:%v", err)
 		ErrorHandler(c, config.ErrCodeErrREQParamInvalid, config.ErrMsgREQParamInvalid)
 		return
 	}
@@ -36,23 +40,23 @@ func Login(c *gin.Context) {
 	//账号验证
 	userInfo, err := model.GetTUserInfo(&model.TUser{Account: req.Account, Password: req.Password})
 	if err != nil && err != gorm.ErrRecordNotFound {
-		logs.Info("系统错误, err:%v", err)
+		logs.Logger.Infof("系统错误, err:%v", err)
 		ErrorHandler(c, config.ErrCodeErrUserNotLogin, config.ErrMsgUserNotLogin)
 		return
-	} else if err == gorm.ErrRecordNotFound {
-		logs.Info("找不到该用户, account:%v, password:%v", req.Account, req.Password)
+	} else if err == gorm.ErrRecordNotFound || userInfo == nil {
+		logs.Logger.Infof("找不到该用户, account:%v, password:%v", req.Account, req.Password)
 		ErrorHandler(c, config.ErrCodeErrREQParamInvalid, config.ErrMsgREQParamInvalid)
 		return
 	}
 
 	// 账号验证通过，生成token
-	tokenString, err := tools.GenerateToken(1)
+	tokenString, err := tools.GenerateToken(userInfo.Id)
 	if err != nil {
-		logs.Error("token生成错误, err:%v", err)
+		logs.Logger.Errorf("token生成错误, err:%v", err)
 		ErrorHandler(c, config.ErrCodeErrBusinessException, config.ErrMsgCodeErrBusinessException)
 		return
 	}
 
-	logs.Info("Login success! userInfo:%v", userInfo)
+	logs.Logger.Infof("Login success! userInfo:%v", userInfo)
 	DataHandler(c, tokenString)
 }

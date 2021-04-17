@@ -6,5 +6,5 @@ import (
 )
 
 func TestGetToken(t *testing.T) {
-	fmt.Println(GetToken(12345))
+	fmt.Println(GenerateToken(12345))
 }

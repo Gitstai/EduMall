@@ -37,16 +37,16 @@ func AuthCheck(tokenString string) (int64, bool) {
 	})
 	var id int64
 	if err != nil || token == nil {
-		logs.Info("jwt.Parse err:%v, token:%v", err, token)
+		logs.Logger.Infof("jwt.Parse err:%v, token:%v", err, token)
 		return 0, false
 	}
 	if !token.Valid {
-		logs.Info("jwt.Parse, token:%v, not valid", err, token)
+		logs.Logger.Infof("jwt.Parse, token:%v, not valid", err, token)
 		return 0, false
 	} else {
 		claims := token.Claims.(jwt.MapClaims)
 		id = int64(claims["sub"].(float64))
-		logs.Info("jwt.Parse success, id:%v, ", id)
+		logs.Logger.Infof("jwt.Parse success, id:%v, ", id)
 		return 1, true
 	}
 }
