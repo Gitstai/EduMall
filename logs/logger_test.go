@@ -17,3 +17,18 @@ func TestInitLogger(t *testing.T) {
 	logger.Fatal("Fatal>>>>>>>>>>>>>>>>>>>>>>>>>", strconv.Itoa(i))
 	logger.Info("resp no ok st:", 12, "msg:", 32)
 }
+
+func TestName(t *testing.T) {
+	try := make(map[string]interface{})
+	try["sub"] = int64(1)
+	switch try["sub"].(type) {
+	case float64:
+		fmt.Println("float64")
+	case int64:
+		fmt.Println("int64")
+	default:
+		fmt.Println("other")
+	}
+	a := try["sub"].(int64)
+	fmt.Println(a)
+}

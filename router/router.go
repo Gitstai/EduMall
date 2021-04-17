@@ -13,6 +13,8 @@ func InitRouter() *gin.Engine {
 		})
 	})
 
+	r.POST("/edu/mall/login", handler.Login)
+
 	authorized := r.Group("/")
 	authorized.Use(handler.CheckLogin)
 	eduRouter := authorized.Group("/edu/mall")

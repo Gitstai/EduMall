@@ -14,13 +14,13 @@ const (
 	ErrCodeErrPermissionException   ErrorCode = 401  //权限错误
 	ErrCodeErrUserMenuInfoException ErrorCode = 402  //用户信息错误
 	ErrCodeErrUserNotLogin          ErrorCode = 403  //用户未登录
-	ErrCodeDuplicateBpm				ErrorCode = 9001 //存在BPM重复工单
+	ErrCodeDuplicateBpm             ErrorCode = 9001 //存在BPM重复工单
 )
 
 const (
-	ErrMsgREQParamInvalid         = "参数错误"
-	ErrMsgErrSystemInnerException = "系统错误"
-	ErrMsgUserNotLogin
+	ErrMsgREQParamInvalid          = "参数错误"
+	ErrMsgCodeErrBusinessException = "系统错误"
+	ErrMsgUserNotLogin             = "尚未登录"
 )
 
 var (
@@ -31,4 +31,8 @@ const (
 	ErrQueryFailMsg  = "查询失败，请稍后"
 	ErrSystemMsg     = "服务器繁忙，请稍后重试"
 	ErrExportFailMsg = "导出失败"
+)
+
+const (
+	UserInfo = "UserInfo"
 )

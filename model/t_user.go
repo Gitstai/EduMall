@@ -21,7 +21,10 @@ type TUser struct {
 func (t *TUser) TableName() string {
 	return "t_user"
 }
+
 func GetTUserInfo(user *TUser) (res TUser, err error) {
 	err = dal.EduDB.Where(user).Where(map[string]interface{}{"is_delete":0}).Find(&res).Error
 	return
 }
+
+
