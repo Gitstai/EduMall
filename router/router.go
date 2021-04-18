@@ -14,6 +14,7 @@ func InitRouter() *gin.Engine {
 	})
 
 	r.POST("/edu/mall/login", handler.Login)
+	r.POST("/edu/mall/register", handler.Register)
 
 	authorized := r.Group("/")
 	authorized.Use(handler.CheckLogin)

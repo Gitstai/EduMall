@@ -6,7 +6,6 @@ import (
 	"EduMall/model"
 	"EduMall/tools"
 	"github.com/gin-gonic/gin"
-	"github.com/jinzhu/gorm"
 )
 
 func CheckLogin(c *gin.Context) {
@@ -25,19 +24,19 @@ func CheckLogin(c *gin.Context) {
 		return
 	}
 	userInfo, err := model.GetTUserInfo(&model.TUser{Id: id})
-	if err != nil && err != gorm.ErrRecordNotFound {
+	if err != nil {
 		logs.Logger.Infof("系统错误, err:%v", err)
 		ErrorHandler(c, config.ErrCodeErrUserNotLogin, config.ErrMsgUserNotLogin)
 		c.Abort()
 		return
-	} else if err == gorm.ErrRecordNotFound {
+	} else if len(userInfo) != 1 {
 		logs.Logger.Infof("找不到该用户, id:%v", id)
 		ErrorHandler(c, config.ErrCodeErrREQParamInvalid, config.ErrMsgREQParamInvalid)
 		c.Abort()
 		return
 	}
 	logs.Logger.Infof("CheckLogin UserInfo:%v", tools.ToJson(userInfo))
-	c.Set(config.UserInfo, userInfo)
+	c.Set(config.UserInfo, userInfo[0])
 	c.Next()
 }
 

@@ -47,6 +47,6 @@ func AuthCheck(tokenString string) (int64, bool) {
 		claims := token.Claims.(jwt.MapClaims)
 		id = int64(claims["sub"].(float64))
 		logs.Logger.Infof("jwt.Parse success, id:%v, ", id)
-		return 1, true
+		return id, true
 	}
 }

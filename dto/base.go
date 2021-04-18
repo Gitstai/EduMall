@@ -5,7 +5,7 @@ import "EduMall/config"
 
 // ResponseJson ...
 type ResponseJson struct {
-	St   config.ErrorCode `json:"st"`
+	Code config.ErrorCode `json:"code"`
 	Msg  string           `json:"msg"`
 	Data interface{}      `json:"data"`
 }
@@ -22,7 +22,7 @@ func NewResponse(data interface{}) *ResponseJson {
 }
 
 func NewResponseWithStatusData(st config.ErrorCode, msg string, data interface{}) *ResponseJson {
-	return &ResponseJson{St: st, Msg: msg, Data: data}
+	return &ResponseJson{Code: st, Msg: msg, Data: data}
 }
 
 func NewResponseWithTotal(data interface{}, total int64) *ResponseJson {

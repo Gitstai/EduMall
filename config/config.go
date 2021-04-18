@@ -21,6 +21,7 @@ const (
 	ErrMsgREQParamInvalid          = "参数错误"
 	ErrMsgCodeErrBusinessException = "系统错误"
 	ErrMsgUserNotLogin             = "尚未登录"
+	ErrMsgUserWrongUser            = "账号或密码错误"
 )
 
 var (

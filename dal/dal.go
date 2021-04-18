@@ -25,6 +25,7 @@ func InitDB() error {
 		return err
 	}
 	EduDB.SingularTable(true)
+	EduDB.LogMode(true)
 	logger.Error("InitDB success")
 	return nil
 }
