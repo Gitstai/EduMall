@@ -1,6 +1,10 @@
 package model
 
-import "time"
+import (
+	"EduMall/dal"
+	"errors"
+	"time"
+)
 
 type TProduct struct {
 	Id            int64     `gorm:"column:id" json:"id"`
@@ -23,4 +27,26 @@ type TProduct struct {
 // TableName sets the insert table name for this struct type
 func (t *TProduct) TableName() string {
 	return "t_product"
+}
+
+func GetTProductInfo(cond *TProduct) ([]*TProduct, error) {
+	var res []*TProduct
+	err := dal.EduDB.Where(cond).Where(map[string]interface{}{"is_delete": 0}).Find(&res).Error
+	return res, err
+}
+
+func InsertTProduct(data *TProduct) (*TProduct, error) {
+	if data == nil {
+		return data, errors.New("insert no data")
+	}
+	err := dal.EduDB.Create(data).Error
+	return data, err
+}
+
+func UpdateTProduct(data *TProduct) (*TProduct, error) {
+	if data == nil {
+		return data, errors.New("insert no data")
+	}
+	err := dal.EduDB.Where("id = ?", data.Id).Update(data).Error
+	return data, err
 }

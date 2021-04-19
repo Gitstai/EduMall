@@ -25,6 +25,8 @@ func GetUserInfo(c *gin.Context) {
 	//	ErrorHandler(c, config.ErrCodeErrBusinessException, "查询出错")
 	//	return
 	//}
+
+	//TODO user格式要改一下
 	DataHandler(c, user)
 	return
 }
