@@ -8,8 +8,8 @@ type TPurchaseRecords struct {
 	ProductId  int64     `gorm:"column:product_id" json:"product_id"`
 	Payment    int32     `gorm:"column:payment" json:"payment"`
 	IsDelete   int8      `gorm:"column:is_delete" json:"is_delete"`
-	CreateTime time.Time `gorm:"column:create_time" json:"create_time"`
-	UpdateTime time.Time `gorm:"column:update_time" json:"update_time"`
+	CreateTime time.Time `gorm:"column:create_time;default:CURRENT_TIMESTAMP" json:"create_time"`
+	UpdateTime time.Time `gorm:"column:update_time;default:CURRENT_TIMESTAMP" json:"update_time"`
 }
 
 // TableName sets the insert table name for this struct type

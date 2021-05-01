@@ -25,13 +25,13 @@ func (t *TUser) TableName() string {
 
 func GetTUserInfo(user *TUser) ([]*TUser, error) {
 	var res []*TUser
-	err := dal.EduDB.Where(user).Where(map[string]interface{}{"is_delete": 0}).Find(&res).Error
+	err := dal.EduDB.Where(user).Where("is_delete = 0").Find(&res).Error
 	return res, err
 }
 
 func InsertTUser(data *TUser) (*TUser, error) {
 	if data == nil {
-		return data, errors.New("insert no data")
+		return nil, errors.New("insert no data")
 	}
 	err := dal.EduDB.Create(data).Error
 	return data, err

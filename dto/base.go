@@ -6,7 +6,7 @@ import "EduMall/config"
 // ResponseJson ...
 type ResponseJson struct {
 	Code config.ErrorCode `json:"code"`
-	Msg  string           `json:"msg"`
+	Msg  string           `json:"message"`
 	Data interface{}      `json:"data"`
 }
 

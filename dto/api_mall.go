@@ -31,6 +31,13 @@ type EduProduct struct {
 	Provider    string `form:"provider,required" json:"provider,required" query:"provider,required"`
 }
 
+type File struct {
+	FileType int32  `form:"fileType,required" json:"fileType,required" query:"fileType,required"`
+	FileName string `form:"fileName,required" json:"fileName,required" query:"fileName,required"`
+	FileUrl  string `form:"fileUrl,required" json:"fileUrl,required" query:"fileUrl,required"`
+	FileId   int64  `form:"fileId,required" json:"fileId,required" query:"fileId,required"`
+}
+
 type GetProductDetailReq struct {
 	ProductId int64 `form:"productId,required" json:"productId,required" query:"productId,required"`
 }
@@ -96,8 +103,7 @@ type ProductDetail struct {
 	BannerImgs  []string `form:"bannerImgs,required" json:"bannerImgs,required" query:"bannerImgs,required"`
 	Inventory   int32    `form:"inventory,required" json:"inventory,required" query:"inventory,required"`
 	SaleVolume  int32    `form:"saleVolume,required" json:"saleVolume,required" query:"saleVolume,required"`
-	FileType    int32    `form:"fileType,required" json:"fileType,required" query:"fileType,required"`
-	FileName    string   `form:"fileName,required" json:"fileName,required" query:"fileName,required"`
+	Files       []*File  `form:"files,omitempty" json:"files,omitempty" query:"files,omitempty"`
 }
 
 type ProductEditInfo struct {
@@ -105,9 +111,7 @@ type ProductEditInfo struct {
 	ProductName   string   `form:"productName,required" json:"productName,required" query:"productName,required"`
 	ProductType   int32    `form:"productType,required" json:"productType,required" query:"productType,required"`
 	Price         int32    `form:"price,required" json:"price,required" query:"price,required"`
-	FileType      int32    `form:"fileType,required" json:"fileType,required" query:"fileType,required"`
-	FileUrl       string   `form:"fileUrl,required" json:"fileUrl,required" query:"fileUrl,required"`
-	FileName      string   `form:"fileName,required" json:"fileName,required" query:"fileName,required"`
+	Files         []*File  `form:"files,omitempty" json:"files,omitempty" query:"files,omitempty"`
 	Status        int32    `form:"status,required" json:"status,required" query:"status,required"`
 	ProductDesc   string   `form:"productDesc,required" json:"productDesc,required" query:"productDesc,required"`
 	BannerImgs    []string `form:"bannerImgs,required" json:"bannerImgs,required" query:"bannerImgs,required"`
@@ -186,6 +190,7 @@ type UpsertEduProductReq struct {
 	BannerImgs    []string `form:"bannerImgs,required" json:"bannerImgs,required" query:"bannerImgs,required"`
 	AfterSaleText string   `form:"afterSaleText,required" json:"afterSaleText,required" query:"afterSaleText,required"`
 	FileName      string   `form:"fileName,required" json:"fileName,required" query:"fileName,required"`
+	FileId        int64    `form:"fileId,required" json:"fileId,required" query:"fileId,required"`
 }
 
 type UpsertEduProductResp struct {

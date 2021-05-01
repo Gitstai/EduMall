@@ -10,7 +10,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 	"math/rand"
-	"time"
 )
 
 func GetUserInfo(c *gin.Context) {
@@ -62,8 +61,13 @@ func Login(c *gin.Context) {
 	}
 
 	logs.Logger.Infof("Login success! userInfo:%v", tools.ToJson(userInfo))
-	c.SetCookie("token", tokenString, int(time.Hour), "/", "", false, false)
+	//c.SetCookie("token", tokenString, int(time.Hour), "/", "", false, false)
+	c.Header("xx-token", tokenString)
 	DataHandler(c, dto.LoginResponse{UserId: userInfo[0].Id})
+}
+
+func Logout(c *gin.Context) {
+
 }
 
 func Register(c *gin.Context) {
@@ -95,11 +99,10 @@ func Register(c *gin.Context) {
 	}
 
 	//建立账号
-	if req.Nickname == nil || *req.Nickname == "" {
-		str := fmt.Sprintf("昵称%d", rand.Uint64())
-		req.Nickname = &str
+	if req.Nickname == "" {
+		req.Nickname = fmt.Sprintf("昵称%d", rand.Uint64())
 	}
-	user, err := model.InsertTUser(&model.TUser{Account: req.Account, Password: req.Password, Nickname: *req.Nickname})
+	user, err := model.InsertTUser(&model.TUser{Account: req.Account, Password: req.Password, Nickname: req.Nickname})
 	if err != nil {
 		logs.Logger.Infof("系统错误, err:%v", err)
 		ErrorHandler(c, config.ErrCodeErrBusinessException, "注册失败，请稍后重试")
@@ -115,6 +118,7 @@ func Register(c *gin.Context) {
 	}
 
 	logs.Logger.Infof("Register success! userInfo:%v", tools.ToJson(user))
-	c.SetCookie("token", tokenString, int(time.Hour), "/", "", false, false)
+	//c.SetCookie("token", tokenString, int(time.Hour), "/", "", false, false)
+	c.Header("xx-token", tokenString)
 	DataHandler(c, dto.RegisterResponse{UserId: user.Id})
 }

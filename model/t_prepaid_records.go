@@ -7,9 +7,9 @@ type TPrepaidRecords struct {
 	UserId     int64     `gorm:"column:user_id" json:"user_id"`
 	CdKey      string    `gorm:"column:cd_key" json:"cd_key"`
 	Amount     int32     `gorm:"column:amount" json:"amount"`
-	IsDelete   int8     `gorm:"column:is_delete" json:"is_delete"`
-	CreateTime time.Time `gorm:"column:create_time" json:"create_time"`
-	UpdateTime time.Time `gorm:"column:update_time" json:"update_time"`
+	IsDelete   int8      `gorm:"column:is_delete" json:"is_delete"`
+	CreateTime time.Time `gorm:"column:create_time;default:CURRENT_TIMESTAMP" json:"create_time"`
+	UpdateTime time.Time `gorm:"column:update_time;default:CURRENT_TIMESTAMP" json:"update_time"`
 }
 
 // TableName sets the insert table name for this struct type
