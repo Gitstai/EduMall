@@ -144,9 +144,125 @@ func UpsertEduProduct(c *gin.Context) {
 }
 
 func GetProductDetail(c *gin.Context) {
+	user := GetUser(c)
+	if user == nil || user.Id <= 0 {
+		ErrorHandler(c, config.ErrCodeErrREQParamInvalid, config.ErrMsgREQParamInvalid)
+		return
+	}
 
+	req := new(dto.GetProductDetailReq)
+	err := c.BindQuery(req)
+	if err != nil {
+		logs.Logger.Infof("req err:%v", req)
+		ErrorHandler(c, config.ErrCodeErrREQParamInvalid, config.ErrMsgREQParamInvalid)
+		return
+	}
+
+	prods, err := model.GetTProduct(&model.TProduct{Id: req.ProductId})
+	if err != nil {
+		logs.Logger.Errorf("func:%v, err:%v", "model.GetTProduct", err)
+		ErrorHandler(c, config.ErrCodeErrBusinessException, config.ErrMsgCodeErrBusinessException)
+		return
+	}
+	if len(prods) == 0 {
+		logs.Logger.Infof("len(prods) == 0, productId:%v", req.ProductId)
+		DataHandler(c, nil)
+		return
+	}
+
+	res := dto.ProductDetail{
+		Id:          prods[0].Id,
+		ProductName: prods[0].Name,
+		ProductType: int32(prods[0].ProductType),
+		Price:       prods[0].Price,
+		Status:      int32(prods[0].Status),
+		ProductDesc: prods[0].DescText,
+		BannerImgs:  strings.Split(prods[0].DescImg, ";"),
+		Inventory:   prods[0].Inventory,
+		SaleVolume:  prods[0].SaleVolume,
+		Files:       make([]*dto.File, 0),
+	}
+
+	files, err := model.GetTProductFile(&model.TProductFile{
+		ProductID: req.ProductId,
+	})
+	if err != nil {
+		logs.Logger.Errorf("func:%v, err:%v", "model.GetTProduct", err)
+		ErrorHandler(c, config.ErrCodeErrBusinessException, config.ErrMsgCodeErrBusinessException)
+		return
+	}
+
+	for _, file := range files {
+		tmp := new(dto.File)
+		tmp.FileId = file.Id
+		tmp.FileUrl = file.Url
+		tmp.FileName = file.FileName
+		tmp.FileType = int32(file.FileType)
+
+		res.Files = append(res.Files, tmp)
+	}
+	DataHandler(c, res)
+	return
 }
 
 func GetProductEditInfo(c *gin.Context) {
+	user := GetUser(c)
+	if user == nil || user.Id <= 0 {
+		ErrorHandler(c, config.ErrCodeErrREQParamInvalid, config.ErrMsgREQParamInvalid)
+		return
+	}
 
+	req := new(dto.GetProductEditInfoReq)
+	err := c.BindQuery(req)
+	if err != nil {
+		logs.Logger.Infof("req err:%v", req)
+		ErrorHandler(c, config.ErrCodeErrREQParamInvalid, config.ErrMsgREQParamInvalid)
+		return
+	}
+
+	prods, err := model.GetTProduct(&model.TProduct{Id: req.ProductId})
+	if err != nil {
+		logs.Logger.Errorf("func:%v, err:%v", "model.GetTProduct", err)
+		ErrorHandler(c, config.ErrCodeErrBusinessException, config.ErrMsgCodeErrBusinessException)
+		return
+	}
+	if len(prods) == 0 {
+		logs.Logger.Infof("len(prods) == 0, productId:%v", req.ProductId)
+		DataHandler(c, nil)
+		return
+	}
+
+	res := dto.ProductEditInfo{
+		Id:            prods[0].Id,
+		ProductName:   prods[0].Name,
+		ProductType:   int32(prods[0].ProductType),
+		Price:         prods[0].Price,
+		Status:        int32(prods[0].Status),
+		ProductDesc:   prods[0].DescText,
+		BannerImgs:    strings.Split(prods[0].DescImg, ";"),
+		Inventory:     prods[0].Inventory,
+		Files:         make([]*dto.File, 0),
+		AfterSaleText: prods[0].AfterSaleText,
+	}
+
+	files, err := model.GetTProductFile(&model.TProductFile{
+		ProductID: req.ProductId,
+	})
+	if err != nil {
+		logs.Logger.Errorf("func:%v, err:%v", "model.GetTProduct", err)
+		ErrorHandler(c, config.ErrCodeErrBusinessException, config.ErrMsgCodeErrBusinessException)
+		return
+	}
+
+	for _, file := range files {
+		tmp := new(dto.File)
+		tmp.FileId = file.Id
+		tmp.FileUrl = file.Url
+		tmp.FileName = file.FileName
+		tmp.FileType = int32(file.FileType)
+
+		res.Files = append(res.Files, tmp)
+	}
+	DataHandler(c, res)
+	return
 }
