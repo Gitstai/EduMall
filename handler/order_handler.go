@@ -7,7 +7,6 @@ import (
 	"EduMall/model"
 	"EduMall/service"
 	"github.com/gin-gonic/gin"
-	"github.com/gin-gonic/gin/binding"
 	"strings"
 )
 
@@ -26,11 +25,11 @@ func GetPurchaseRecords(c *gin.Context) {
 		return
 	}
 
-	if req.UserId != user.Id {
-		logs.Logger.Infof("req.UserId:%v, user.Id:%v, not equal", req.UserId, user.Id)
-		ErrorHandler(c, config.ErrCodeErrREQParamInvalid, config.ErrMsgREQParamInvalid)
-		return
-	}
+	//if req.UserId != user.Id {
+	//	logs.Logger.Infof("req.UserId:%v, user.Id:%v, not equal", req.UserId, user.Id)
+	//	ErrorHandler(c, config.ErrCodeErrREQParamInvalid, config.ErrMsgREQParamInvalid)
+	//	return
+	//}
 	if req.PageNum < 1 {
 		req.PageNum = 1
 	}
@@ -38,7 +37,7 @@ func GetPurchaseRecords(c *gin.Context) {
 		req.PageSize = 5
 	}
 
-	records, count, err := model.QueryTPurchaseRecords(&model.TPurchaseRecords{UserId: req.UserId}, req.PageNum, req.PageSize)
+	records, count, err := model.QueryTPurchaseRecords(&model.TPurchaseRecords{UserId: user.Id, ProductName: req.ProductName}, req.PageNum, req.PageSize)
 	if err != nil {
 		logs.Logger.Errorf("func:%v, err:%v", "model.GetTPurchaseRecords", err)
 		ErrorHandler(c, config.ErrCodeErrBusinessException, config.ErrMsgBusinessException)
@@ -72,19 +71,19 @@ func Recharge(c *gin.Context) {
 	}
 
 	req := new(dto.RechargeReq)
-	err := c.ShouldBindWith(req, binding.Form)
+	err := c.ShouldBindJSON(req)
 	if err != nil {
 		logs.Logger.Infof("req err:%v", req)
 		ErrorHandler(c, config.ErrCodeErrREQParamInvalid, config.ErrMsgREQParamInvalid)
 		return
 	}
 
-	//验证传过来的userid是否和登录的userid一致
-	if req.UserId == 0 || req.UserId != user.Id {
-		logs.Logger.Infof("userId is not equal, req.UserId:%v, userId:%v", req.UserId, user.Id)
-		ErrorHandler(c, config.ErrCodeErrREQParamInvalid, config.ErrMsgREQParamInvalid)
-		return
-	}
+	////验证传过来的userid是否和登录的userid一致
+	//if req.UserId == 0 || req.UserId != user.Id {
+	//	logs.Logger.Infof("userId is not equal, req.UserId:%v, userId:%v", req.UserId, user.Id)
+	//	ErrorHandler(c, config.ErrCodeErrREQParamInvalid, config.ErrMsgREQParamInvalid)
+	//	return
+	//}
 
 	//验证激活码并获取其相应的金额
 	amount := service.GetKeyAmount(req.CDkey)
@@ -95,7 +94,7 @@ func Recharge(c *gin.Context) {
 	}
 
 	//增加账户余额
-	err = model.IncreaseBalance(req.UserId, amount)
+	err = model.IncreaseBalance(user.Id, amount)
 	if err != nil {
 		logs.Logger.Errorf("fun:=model.IncreaseBalance, err:%v", err)
 		ErrorHandler(c, config.ErrCodeErrBusinessException, config.ErrMsgBusinessException)
@@ -112,7 +111,7 @@ func Recharge(c *gin.Context) {
 
 	//写入充值记录
 	_, err = model.InsertTPrepaidRecords(&model.TPrepaidRecords{
-		UserId: req.UserId,
+		UserId: user.Id,
 		CdKey:  req.CDkey,
 		Amount: amount,
 	})
@@ -141,12 +140,12 @@ func Purchase(c *gin.Context) {
 		return
 	}
 
-	//验证传过来的userid是否和登录的userid一致
-	if req.UserId == 0 || req.UserId != user.Id {
-		logs.Logger.Infof("userId is not equal, req.UserId:%v, userId:%v", req.UserId, user.Id)
-		ErrorHandler(c, config.ErrCodeErrREQParamInvalid, config.ErrMsgREQParamInvalid)
-		return
-	}
+	////验证传过来的userid是否和登录的userid一致
+	//if req.UserId == 0 || req.UserId != user.Id {
+	//	logs.Logger.Infof("userId is not equal, req.UserId:%v, userId:%v", req.UserId, user.Id)
+	//	ErrorHandler(c, config.ErrCodeErrREQParamInvalid, config.ErrMsgREQParamInvalid)
+	//	return
+	//}
 
 	//找到该产品，提取信息
 	products, err := model.GetTProduct(&model.TProduct{Id: req.ProductId})
@@ -167,6 +166,21 @@ func Purchase(c *gin.Context) {
 	if user.Balance < product.Price {
 		logs.Logger.Infof("账户余额不足, user.Balance:%v, product.Price:%v", user.Balance, product.Price)
 		ErrorHandler(c, config.ErrCodeErrBusinessException, config.ErrMsgLackOfBalance)
+		return
+	}
+
+	//检查之前是否购买了
+	records, err := model.GetTPurchaseRecords(&model.TPurchaseRecords{UserId: user.Id, ProductId: req.ProductId})
+	if err != nil {
+		logs.Logger.Errorf("func:=model.GetTPurchaseRecords, err:%v", err)
+		ErrorHandler(c, config.ErrCodeErrBusinessException, config.ErrMsgBusinessException)
+		return
+	}
+
+	//之前购买过
+	if len(records) > 0 {
+		logs.Logger.Infof("func:=model.GetTPurchaseRecords, len(records):%v", len(records))
+		ErrorHandler(c, config.ErrCodeErrBusinessException, config.ErrMsgHaveBought)
 		return
 	}
 
@@ -212,12 +226,12 @@ func CheckPurchased(c *gin.Context) {
 		return
 	}
 
-	//验证传过来的userid是否和登录的userid一致
-	if req.UserId == 0 || req.UserId != user.Id {
-		logs.Logger.Infof("userId is not equal, req.UserId:%v, userId:%v", req.UserId, user.Id)
-		ErrorHandler(c, config.ErrCodeErrREQParamInvalid, config.ErrMsgREQParamInvalid)
-		return
-	}
+	////验证传过来的userid是否和登录的userid一致
+	//if req.UserId == 0 || req.UserId != user.Id {
+	//	logs.Logger.Infof("userId is not equal, req.UserId:%v, userId:%v", req.UserId, user.Id)
+	//	ErrorHandler(c, config.ErrCodeErrREQParamInvalid, config.ErrMsgREQParamInvalid)
+	//	return
+	//}
 
 	//查询购买记录
 	records, err := model.GetTPurchaseRecords(&model.TPurchaseRecords{UserId: user.Id, ProductId: req.ProductId})

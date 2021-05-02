@@ -46,7 +46,11 @@ func QueryTPurchaseRecords(cond *TPurchaseRecords, pageNum, pageSize int32) ([]*
 	}
 
 	var res []*TPurchaseRecords
-	tx := dal.EduDB.Where(cond).Where("is_delete = 0")
+	tx := dal.EduDB.Table("t_purchase_records").Where("user_id = ? AND is_delete = 0", cond.UserId)
+
+	if cond.ProductName != "" {
+		tx = tx.Where("product_name like ?", "%"+cond.ProductName+"%")
+	}
 
 	var count int64
 	err := tx.Count(&count).Error

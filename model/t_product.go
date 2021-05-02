@@ -44,13 +44,12 @@ func QueryTProduct(cond *TProduct, pageNum, pageSize int32) ([]*TProduct, int64,
 	}
 
 	var res []*TProduct
-	tx := dal.EduDB.Where("is_delete = 0")
+	tx := dal.EduDB.Table("t_product").Where("is_delete = 0")
 	if cond.ProviderName != "" {
 		tx = tx.Where("provider_name like ?", "%"+cond.ProviderName+"%")
 	}
 	if cond.Keywords != "" {
-		tx = tx.Where("keywords like ?", "%"+cond.Keywords+"%")
-		tx = tx.Where("name like ?", "%"+cond.Keywords+"%")
+		tx = tx.Where("keywords like ? OR name like ?", "%"+cond.Keywords+"%", "%"+cond.Keywords+"%")
 	}
 	if tools.InArrayNoIndex(cond.ProductType, []int8{common.ProductTypeExperience, common.ProductTypeRegular}) {
 		tx = tx.Where("product_type = ?", cond.ProductType)

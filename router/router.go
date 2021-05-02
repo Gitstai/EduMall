@@ -14,23 +14,23 @@ func InitRouter() *gin.Engine {
 		})
 	})
 
-	r.POST("/edu/mall/login", handler.Login)       //done, test ok
-	r.POST("/edu/mall/register", handler.Register) //done, test ok
+	r.POST("/edu/mall/login", handler.Login)       //test ok
+	r.POST("/edu/mall/register", handler.Register) //test ok
 
 	authorized := r.Group("/")
 	authorized.Use(handler.CheckLogin)
 	eduRouter := authorized.Group("/edu/mall")
 	{
 		eduRouter.GET("/logout", handler.Logout)                         //可不写 前端直接去除header
-		eduRouter.GET("/getUserInfo", handler.GetUserInfo)               //done, test ok
-		eduRouter.GET("/searchEduProducts", handler.SearchEduProducts)   //done, not test
-		eduRouter.POST("/upsertEduProduct", handler.UpsertEduProduct)    //done, not test
-		eduRouter.GET("/getProductDetail", handler.GetProductDetail)     //done, not test
-		eduRouter.GET("/getProductEditInfo", handler.GetProductEditInfo) //done, not test
-		eduRouter.GET("/getPurchaseRecords", handler.GetPurchaseRecords) //done, not test
-		eduRouter.POST("/recharge", handler.Recharge)                    //done, not test
-		eduRouter.GET("/purchase", handler.Purchase)                     //done, not test
-		eduRouter.GET("/checkPurchased", handler.CheckPurchased)         //done, not test
+		eduRouter.GET("/getUserInfo", handler.GetUserInfo)               //test ok
+		eduRouter.GET("/searchEduProducts", handler.SearchEduProducts)   //test ok
+		eduRouter.POST("/upsertEduProduct", handler.UpsertEduProduct)    //test ok
+		eduRouter.GET("/getProductDetail", handler.GetProductDetail)     //test ok
+		eduRouter.GET("/getProductEditInfo", handler.GetProductEditInfo) //test ok
+		eduRouter.GET("/getPurchaseRecords", handler.GetPurchaseRecords) //test ok
+		eduRouter.POST("/recharge", handler.Recharge)                    //test ok
+		eduRouter.GET("/purchase", handler.Purchase)                     //test ok
+		eduRouter.GET("/checkPurchased", handler.CheckPurchased)         //test ok
 	}
 	return r
 }

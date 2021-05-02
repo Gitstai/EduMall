@@ -25,8 +25,14 @@ func GetUserInfo(c *gin.Context) {
 	//	return
 	//}
 
-	//TODO user格式要改一下
-	DataHandler(c, user)
+	userInfo := &dto.UserInfo{
+		UserId:   user.Id,
+		UserType: int32(user.UserType),
+		Nickname: user.Nickname,
+		Balance:  user.Balance,
+		Account:  user.Account,
+	}
+	DataHandler(c, userInfo)
 	return
 }
 
@@ -94,7 +100,7 @@ func Register(c *gin.Context) {
 		return
 	} else if len(userInfo) != 0 {
 		logs.Logger.Infof("账号重复, account:%v, password:%v", req.Account, req.Password)
-		ErrorHandler(c, config.ErrCodeErrREQParamInvalid, config.ErrMsgREQParamInvalid)
+		ErrorHandler(c, config.ErrCodeErrREQParamInvalid, config.ErrMsgAccountAlreadyExist)
 		return
 	}
 

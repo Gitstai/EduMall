@@ -6,7 +6,6 @@ import (
 	"EduMall/logs"
 	"EduMall/model"
 	"github.com/gin-gonic/gin"
-	"github.com/gin-gonic/gin/binding"
 	"strings"
 )
 
@@ -66,16 +65,9 @@ func UpsertEduProduct(c *gin.Context) {
 	}
 
 	req := new(dto.UpsertEduProductReq)
-	err := c.ShouldBindWith(req, binding.Form)
+	err := c.ShouldBindJSON(req)
 	if err != nil {
 		logs.Logger.Infof("req err:%v", req)
-		ErrorHandler(c, config.ErrCodeErrREQParamInvalid, config.ErrMsgREQParamInvalid)
-		return
-	}
-
-	//验证传过来的userid是否和登录的userid一致
-	if req.UserId == 0 || req.UserId != user.Id {
-		logs.Logger.Infof("userId is not equal, req.UserId:%v, userId:%v", req.UserId, user.Id)
 		ErrorHandler(c, config.ErrCodeErrREQParamInvalid, config.ErrMsgREQParamInvalid)
 		return
 	}
