@@ -8,7 +8,6 @@ import (
 	"EduMall/tools"
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"github.com/gin-gonic/gin/binding"
 	"math/rand"
 )
 
@@ -39,7 +38,7 @@ func GetUserInfo(c *gin.Context) {
 func Login(c *gin.Context) {
 	//获取参数
 	req := new(dto.LoginRequest)
-	err := c.ShouldBindWith(req, binding.Form)
+	err := c.ShouldBindJSON(req)
 	if err != nil {
 		logs.Logger.Errorf("req err:%v", err)
 		ErrorHandler(c, config.ErrCodeErrREQParamInvalid, config.ErrMsgREQParamInvalid)
@@ -79,7 +78,7 @@ func Logout(c *gin.Context) {
 func Register(c *gin.Context) {
 	//获取参数
 	req := new(dto.RegisterRequest)
-	err := c.ShouldBindWith(req, binding.Form)
+	err := c.ShouldBindJSON(req)
 	if err != nil {
 		logs.Logger.Errorf("req err:%v", err)
 		ErrorHandler(c, config.ErrCodeErrREQParamInvalid, config.ErrMsgREQParamInvalid)
