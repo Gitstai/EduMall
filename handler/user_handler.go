@@ -56,7 +56,7 @@ func Login(c *gin.Context) {
 	tokenString, err := tools.GenerateToken(userInfo[0].Id)
 	if err != nil {
 		logs.Logger.Errorf("token生成错误, err:%v", err)
-		ErrorHandler(c, config.ErrCodeErrBusinessException, config.ErrMsgCodeErrBusinessException)
+		ErrorHandler(c, config.ErrCodeErrBusinessException, config.ErrMsgBusinessException)
 		return
 	}
 
@@ -113,7 +113,7 @@ func Register(c *gin.Context) {
 	tokenString, err := tools.GenerateToken(user.Id)
 	if err != nil {
 		logs.Logger.Errorf("token生成错误, err:%v", err)
-		ErrorHandler(c, config.ErrCodeErrBusinessException, config.ErrMsgCodeErrBusinessException)
+		ErrorHandler(c, config.ErrCodeErrBusinessException, config.ErrMsgBusinessException)
 		return
 	}
 

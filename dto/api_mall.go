@@ -1,11 +1,9 @@
 package dto
 
 type AfterSaleInfo struct {
-	ProductName   string `form:"productName,required" json:"productName,required" query:"productName,required"`
-	FileType      int32  `form:"fileType,required" json:"fileType,required" query:"fileType,required"`
-	FileUrl       string `form:"fileUrl,required" json:"fileUrl,required" query:"fileUrl,required"`
-	FileName      string `form:"fileName,required" json:"fileName,required" query:"fileName,required"`
-	AfterSaleText string `form:"afterSaleText,required" json:"afterSaleText,required" query:"afterSaleText,required"`
+	ProductName   string  `form:"productName,required" json:"productName,required" query:"productName,required"`
+	Files         []*File `form:"files,omitempty" json:"files,omitempty" query:"files,omitempty"`
+	AfterSaleText string  `form:"afterSaleText,required" json:"afterSaleText,required" query:"afterSaleText,required"`
 }
 
 type CheckPurchasedReq struct {
@@ -133,7 +131,6 @@ type PurchaseRecord struct {
 type PurchaseReq struct {
 	UserId    int64 `form:"userId,required" json:"userId,required" query:"userId,required"`
 	ProductId int64 `form:"productId,required" json:"productId,required" query:"productId,required"`
-	Price     int32 `form:"price,required" json:"price,required" query:"price,required"`
 }
 
 type PurchaseResp struct {

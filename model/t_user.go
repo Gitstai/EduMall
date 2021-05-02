@@ -3,6 +3,7 @@ package model
 import (
 	"EduMall/dal"
 	"errors"
+	"github.com/jinzhu/gorm"
 	"time"
 )
 
@@ -35,4 +36,20 @@ func InsertTUser(data *TUser) (*TUser, error) {
 	}
 	err := dal.EduDB.Create(data).Error
 	return data, err
+}
+
+func IncreaseBalance(userId int64, amount int32) error {
+	if amount <= 0 {
+		return errors.New("illegal amount")
+	}
+	err := dal.EduDB.Table("t_user").Where("id = ?", userId).Update("balance", gorm.Expr("balance + ?", amount)).Error
+	return err
+}
+
+func DecreaseBalance(userId int64, amount int32) error {
+	if amount <= 0 {
+		return errors.New("illegal amount")
+	}
+	err := dal.EduDB.Table("t_user").Where("id = ?", userId).Update("balance", gorm.Expr("balance - ?", amount)).Error
+	return err
 }

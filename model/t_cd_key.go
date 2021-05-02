@@ -2,13 +2,11 @@ package model
 
 import (
 	"EduMall/dal"
-	"errors"
 	"time"
 )
 
-type TPrepaidRecords struct {
-	Id         int64     `gorm:"column:id" json:"id"`
-	UserId     int64     `gorm:"column:user_id" json:"user_id"`
+type TCdKey struct {
+	ID         int64     `gorm:"column:id" json:"id"`
 	CdKey      string    `gorm:"column:cd_key" json:"cd_key"`
 	Amount     int32     `gorm:"column:amount" json:"amount"`
 	IsDelete   int8      `gorm:"column:is_delete" json:"is_delete"`
@@ -17,14 +15,17 @@ type TPrepaidRecords struct {
 }
 
 // TableName sets the insert table name for this struct type
-func (t *TPrepaidRecords) TableName() string {
-	return "t_prepaid_records"
+func (t *TCdKey) TableName() string {
+	return "t_cd_key"
 }
 
-func InsertTPrepaidRecords(data *TPrepaidRecords) (*TPrepaidRecords, error) {
-	if data == nil {
-		return nil, errors.New("insert no data")
-	}
-	err := dal.EduDB.Create(data).Error
-	return data, err
+func GetTCdKey(cdKey string) (TCdKey, error) {
+	var res TCdKey
+	err := dal.EduDB.Where("cd_key = ? AND is_delete = 0", cdKey).Find(&res).Error
+	return res, err
+}
+
+func DelTCdKey(cdKey string) error {
+	err := dal.EduDB.Where("cd_key = ?", cdKey).Set("is_delete", 1).Error
+	return err
 }

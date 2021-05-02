@@ -25,10 +25,17 @@ func SearchEduProducts(c *gin.Context) {
 		return
 	}
 
+	if req.PageNum < 1 {
+		req.PageNum = 1
+	}
+	if req.PageSize <= 0 {
+		req.PageSize = 5
+	}
+
 	prods, total, err := model.QueryTProduct(&model.TProduct{ProviderName: req.Provider, ProductType: int8(req.ProductType), Keywords: req.Keywords}, req.PageNum, req.PageSize)
 	if err != nil {
 		logs.Logger.Errorf("func:%v, err:%v", "model.QueryTProduct", err)
-		ErrorHandler(c, config.ErrCodeErrBusinessException, config.ErrMsgCodeErrBusinessException)
+		ErrorHandler(c, config.ErrCodeErrBusinessException, config.ErrMsgBusinessException)
 		return
 	}
 
@@ -89,7 +96,7 @@ func UpsertEduProduct(c *gin.Context) {
 			DescImg:       strings.Join(req.BannerImgs, ";"),
 		}); err != nil {
 			logs.Logger.Errorf("func:%v, err:%v", "model.UpdateTProduct", err)
-			ErrorHandler(c, config.ErrCodeErrBusinessException, config.ErrMsgCodeErrBusinessException)
+			ErrorHandler(c, config.ErrCodeErrBusinessException, config.ErrMsgBusinessException)
 			return
 		}
 	} else { //创建产品
@@ -106,7 +113,7 @@ func UpsertEduProduct(c *gin.Context) {
 		})
 		if err != nil {
 			logs.Logger.Errorf("func:%v, err:%v", "model.InsertTProduct", err)
-			ErrorHandler(c, config.ErrCodeErrBusinessException, config.ErrMsgCodeErrBusinessException)
+			ErrorHandler(c, config.ErrCodeErrBusinessException, config.ErrMsgBusinessException)
 			return
 		}
 		req.Id = p.Id
@@ -124,7 +131,7 @@ func UpsertEduProduct(c *gin.Context) {
 			Url:      req.FileUrl,
 		}); err != nil {
 			logs.Logger.Errorf("func:%v, err:%v", "model.UpdateTProductFile", err)
-			ErrorHandler(c, config.ErrCodeErrBusinessException, config.ErrMsgCodeErrBusinessException)
+			ErrorHandler(c, config.ErrCodeErrBusinessException, config.ErrMsgBusinessException)
 			return
 		}
 	} else { //创建产品对应的文件
@@ -135,7 +142,7 @@ func UpsertEduProduct(c *gin.Context) {
 			ProductID: req.Id,
 		}); err != nil {
 			logs.Logger.Errorf("func:%v, err:%v", "model.InsertTProductFile", err)
-			ErrorHandler(c, config.ErrCodeErrBusinessException, config.ErrMsgCodeErrBusinessException)
+			ErrorHandler(c, config.ErrCodeErrBusinessException, config.ErrMsgBusinessException)
 			return
 		}
 	}
@@ -161,7 +168,7 @@ func GetProductDetail(c *gin.Context) {
 	prods, err := model.GetTProduct(&model.TProduct{Id: req.ProductId})
 	if err != nil {
 		logs.Logger.Errorf("func:%v, err:%v", "model.GetTProduct", err)
-		ErrorHandler(c, config.ErrCodeErrBusinessException, config.ErrMsgCodeErrBusinessException)
+		ErrorHandler(c, config.ErrCodeErrBusinessException, config.ErrMsgBusinessException)
 		return
 	}
 	if len(prods) == 0 {
@@ -188,7 +195,7 @@ func GetProductDetail(c *gin.Context) {
 	})
 	if err != nil {
 		logs.Logger.Errorf("func:%v, err:%v", "model.GetTProduct", err)
-		ErrorHandler(c, config.ErrCodeErrBusinessException, config.ErrMsgCodeErrBusinessException)
+		ErrorHandler(c, config.ErrCodeErrBusinessException, config.ErrMsgBusinessException)
 		return
 	}
 
@@ -223,7 +230,7 @@ func GetProductEditInfo(c *gin.Context) {
 	prods, err := model.GetTProduct(&model.TProduct{Id: req.ProductId})
 	if err != nil {
 		logs.Logger.Errorf("func:%v, err:%v", "model.GetTProduct", err)
-		ErrorHandler(c, config.ErrCodeErrBusinessException, config.ErrMsgCodeErrBusinessException)
+		ErrorHandler(c, config.ErrCodeErrBusinessException, config.ErrMsgBusinessException)
 		return
 	}
 	if len(prods) == 0 {
@@ -250,7 +257,7 @@ func GetProductEditInfo(c *gin.Context) {
 	})
 	if err != nil {
 		logs.Logger.Errorf("func:%v, err:%v", "model.GetTProduct", err)
-		ErrorHandler(c, config.ErrCodeErrBusinessException, config.ErrMsgCodeErrBusinessException)
+		ErrorHandler(c, config.ErrCodeErrBusinessException, config.ErrMsgBusinessException)
 		return
 	}
 

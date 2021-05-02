@@ -18,10 +18,13 @@ const (
 )
 
 const (
-	ErrMsgREQParamInvalid          = "参数错误"
-	ErrMsgCodeErrBusinessException = "系统错误"
-	ErrMsgUserNotLogin             = "尚未登录"
-	ErrMsgUserWrongUser            = "账号或密码错误"
+	ErrMsgREQParamInvalid   = "参数错误"
+	ErrMsgBusinessException = "系统错误"
+	ErrMsgUserNotLogin      = "尚未登录"
+	ErrMsgUserWrongUser     = "账号或密码错误"
+	ErrMsgCdKeyNotLegal     = "激活码不合法或已失效"
+	ErrMsgNotExistProducts  = "不存在该产品"
+	ErrMsgLackOfBalance     = "余额不足"
 )
 
 var (
