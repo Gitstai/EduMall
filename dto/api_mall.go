@@ -2,7 +2,7 @@ package dto
 
 type AfterSaleInfo struct {
 	ProductName   string  `form:"productName,required" json:"productName,required" query:"productName,required"`
-	Files         []*File `form:"files,omitempty" json:"files,omitempty" query:"files,omitempty"`
+	Files         []*File `form:"files,required" json:"files,required" query:"files,required"`
 	AfterSaleText string  `form:"afterSaleText,required" json:"afterSaleText,required" query:"afterSaleText,required"`
 }
 
@@ -12,7 +12,7 @@ type CheckPurchasedReq struct {
 }
 
 type CheckPurchasedResp struct {
-	AfterSaleInfo *AfterSaleInfo `form:"afterSaleInfo,omitempty" json:"afterSaleInfo,omitempty" query:"afterSaleInfo,omitempty"`
+	AfterSaleInfo *AfterSaleInfo `form:"afterSaleInfo,required" json:"afterSaleInfo,required" query:"afterSaleInfo,required"`
 	Code          int64          `form:"code,required" json:"code,required" query:"code,required"`
 	Message       string         `form:"message,required" json:"message,required" query:"message,required"`
 }
@@ -41,7 +41,7 @@ type GetProductDetailReq struct {
 }
 
 type GetProductDetailResp struct {
-	Detail  *ProductDetail `form:"detail,omitempty" json:"detail,omitempty" query:"detail,omitempty"`
+	Detail  *ProductDetail `form:"detail,required" json:"detail,required" query:"detail,required"`
 	Code    int64          `form:"code,required" json:"code,required" query:"code,required"`
 	Message string         `form:"message,required" json:"message,required" query:"message,required"`
 }
@@ -51,7 +51,7 @@ type GetProductEditInfoReq struct {
 }
 
 type GetProductEditInfoResp struct {
-	Info    *ProductEditInfo `form:"info,omitempty" json:"info,omitempty" query:"info,omitempty"`
+	Info    *ProductEditInfo `form:"info,required" json:"info,required" query:"info,required"`
 	Code    int64            `form:"code,required" json:"code,required" query:"code,required"`
 	Message string           `form:"message,required" json:"message,required" query:"message,required"`
 }
@@ -74,7 +74,7 @@ type GetUserInfoReq struct {
 }
 
 type GetUserInfoResp struct {
-	UserInfo *UserInfo `form:"userInfo,omitempty" json:"userInfo,omitempty" query:"userInfo,omitempty"`
+	UserInfo *UserInfo `form:"userInfo,required" json:"userInfo,required" query:"userInfo,required"`
 	Code     int64     `form:"code,required" json:"code,required" query:"code,required"`
 	Message  string    `form:"message,required" json:"message,required" query:"message,required"`
 }
@@ -101,7 +101,7 @@ type ProductDetail struct {
 	BannerImgs  []string `form:"bannerImgs,required" json:"bannerImgs,required" query:"bannerImgs,required"`
 	Inventory   int32    `form:"inventory,required" json:"inventory,required" query:"inventory,required"`
 	SaleVolume  int32    `form:"saleVolume,required" json:"saleVolume,required" query:"saleVolume,required"`
-	Files       []*File  `form:"files,omitempty" json:"files,omitempty" query:"files,omitempty"`
+	Files       []*File  `form:"files,required" json:"files,required" query:"files,required"`
 }
 
 type ProductEditInfo struct {
@@ -109,7 +109,7 @@ type ProductEditInfo struct {
 	ProductName   string   `form:"productName,required" json:"productName,required" query:"productName,required"`
 	ProductType   int32    `form:"productType,required" json:"productType,required" query:"productType,required"`
 	Price         int32    `form:"price,required" json:"price,required" query:"price,required"`
-	Files         []*File  `form:"files,omitempty" json:"files,omitempty" query:"files,omitempty"`
+	Files         []*File  `form:"files,required" json:"files,required" query:"files,required"`
 	Status        int32    `form:"status,required" json:"status,required" query:"status,required"`
 	ProductDesc   string   `form:"productDesc,required" json:"productDesc,required" query:"productDesc,required"`
 	BannerImgs    []string `form:"bannerImgs,required" json:"bannerImgs,required" query:"bannerImgs,required"`

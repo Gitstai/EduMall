@@ -41,7 +41,7 @@ func SearchEduProducts(c *gin.Context) {
 	res := make([]*dto.EduProduct, 0, len(prods))
 	for _, p := range prods {
 		tmp := new(dto.EduProduct)
-		tmp.ProductId = p.ProviderId
+		tmp.ProductId = p.Id
 		tmp.Provider = p.ProviderName
 		tmp.ProductType = int32(p.ProductType)
 		tmp.ProductDesc = p.DescText
