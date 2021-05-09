@@ -9,7 +9,7 @@ import (
 
 const (
 	USERNAME = "root"
-	PASSWORD = "memo723993"
+	PASSWORD = "root"
 	HOST     = "127.0.0.1:3306"
 	DBName   = "edumall"
 )
