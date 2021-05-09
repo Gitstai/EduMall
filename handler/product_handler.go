@@ -129,7 +129,7 @@ func UpsertEduProduct(c *gin.Context) {
 			ErrorHandler(c, config.ErrCodeErrBusinessException, config.ErrMsgBusinessException)
 			return
 		}
-	} else { //创建产品对应的文件
+	} else if isFileValid(req.FileType, req.FileName, req.FileUrl) { //若文件有效，则创建产品对应的文件
 		if _, err := model.InsertTProductFile(&model.TProductFile{
 			FileType:  int8(req.FileType),
 			FileName:  req.FileName,
@@ -143,6 +143,19 @@ func UpsertEduProduct(c *gin.Context) {
 	}
 
 	DataHandler(c, nil)
+}
+
+func isFileValid(fileType int32, fileName, url string) bool {
+	if fileType == 0 {
+		return false
+	}
+	if fileName == "" {
+		return false
+	}
+	if url == "" {
+		return false
+	}
+	return true
 }
 
 func GetProductDetail(c *gin.Context) {
