@@ -28,7 +28,7 @@ func (t *TPurchaseRecords) TableName() string {
 
 func GetTPurchaseRecords(cond *TPurchaseRecords) ([]*TPurchaseRecords, error) {
 	var res []*TPurchaseRecords
-	err := dal.EduDB.Where(cond).Where(map[string]interface{}{"is_delete": 0}).Find(&res).Error
+	err := dal.EduDB.Table("t_purchase_records").Where(cond).Where(map[string]interface{}{"is_delete": 0}).Find(&res).Error
 	return res, err
 }
 
@@ -36,7 +36,7 @@ func InsertTPurchaseRecords(data *TPurchaseRecords) (*TPurchaseRecords, error) {
 	if data == nil {
 		return nil, errors.New("insert no data")
 	}
-	err := dal.EduDB.Create(data).Error
+	err := dal.EduDB.Table("t_purchase_records").Create(data).Error
 	return data, err
 }
 

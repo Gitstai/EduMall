@@ -25,6 +25,6 @@ func InsertTPrepaidRecords(data *TPrepaidRecords) (*TPrepaidRecords, error) {
 	if data == nil {
 		return nil, errors.New("insert no data")
 	}
-	err := dal.EduDB.Create(data).Error
+	err := dal.EduDB.Table("t_prepaid_records").Create(data).Error
 	return data, err
 }

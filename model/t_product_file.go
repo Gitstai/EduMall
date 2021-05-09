@@ -24,7 +24,7 @@ func (t *TProductFile) TableName() string {
 
 func GetTProductFile(cond *TProductFile) ([]*TProductFile, error) {
 	var res []*TProductFile
-	err := dal.EduDB.Where(cond).Where(map[string]interface{}{"is_delete": 0}).Find(&res).Error
+	err := dal.EduDB.Table("t_product_file").Where(cond).Where(map[string]interface{}{"is_delete": 0}).Find(&res).Error
 	return res, err
 }
 
@@ -32,7 +32,7 @@ func InsertTProductFile(data *TProductFile) (*TProductFile, error) {
 	if data == nil {
 		return nil, errors.New("insert no data")
 	}
-	err := dal.EduDB.Create(data).Error
+	err := dal.EduDB.Table("t_product_file").Create(data).Error
 	return data, err
 }
 
@@ -40,6 +40,6 @@ func UpdateTProductFile(data *TProductFile) error {
 	if data == nil {
 		return errors.New("update no data")
 	}
-	err := dal.EduDB.Where("id = ?", data.Id).Update(data).Error
+	err := dal.EduDB.Table("t_product_file").Where("id = ?", data.Id).Update(data).Error
 	return err
 }

@@ -20,7 +20,7 @@ func (t *TCdKey) TableName() string {
 }
 
 func InsertTCdKey(cdKey string, amount int32) error {
-	err := dal.EduDB.Create(&TCdKey{
+	err := dal.EduDB.Table("t_cd_key").Create(&TCdKey{
 		CdKey:  cdKey,
 		Amount: amount,
 	}).Error
@@ -29,7 +29,7 @@ func InsertTCdKey(cdKey string, amount int32) error {
 
 func GetTCdKey(cdKey string) (TCdKey, error) {
 	var res TCdKey
-	err := dal.EduDB.Where("cd_key = ? AND is_delete = 0", cdKey).Find(&res).Error
+	err := dal.EduDB.Table("t_cd_key").Where("cd_key = ? AND is_delete = 0", cdKey).Find(&res).Error
 	return res, err
 }
 

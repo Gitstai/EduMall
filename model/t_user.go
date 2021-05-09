@@ -26,7 +26,7 @@ func (t *TUser) TableName() string {
 
 func GetTUserInfo(user *TUser) ([]*TUser, error) {
 	var res []*TUser
-	err := dal.EduDB.Where(user).Where("is_delete = 0").Find(&res).Error
+	err := dal.EduDB.Table("t_user").Where(user).Where("is_delete = 0").Find(&res).Error
 	return res, err
 }
 
@@ -34,7 +34,7 @@ func InsertTUser(data *TUser) (*TUser, error) {
 	if data == nil {
 		return nil, errors.New("insert no data")
 	}
-	err := dal.EduDB.Create(data).Error
+	err := dal.EduDB.Table("t_user").Create(data).Error
 	return data, err
 }
 

@@ -34,7 +34,7 @@ func (t *TProduct) TableName() string {
 
 func GetTProduct(cond *TProduct) ([]*TProduct, error) {
 	var res []*TProduct
-	err := dal.EduDB.Where(cond).Where(map[string]interface{}{"is_delete": 0}).Find(&res).Error
+	err := dal.EduDB.Table("t_product").Where(cond).Where(map[string]interface{}{"is_delete": 0}).Find(&res).Error
 	return res, err
 }
 
@@ -73,7 +73,7 @@ func InsertTProduct(data *TProduct) (*TProduct, error) {
 	if data == nil {
 		return nil, errors.New("insert no data")
 	}
-	err := dal.EduDB.Create(data).Error
+	err := dal.EduDB.Table("t_product").Create(data).Error
 	return data, err
 }
 
@@ -81,6 +81,6 @@ func UpdateTProduct(data *TProduct) error {
 	if data == nil {
 		return errors.New("update no data")
 	}
-	err := dal.EduDB.Where("id = ?", data.Id).Update(data).Error
+	err := dal.EduDB.Table("t_product").Where("id = ?", data.Id).Update(data).Error
 	return err
 }
