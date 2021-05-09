@@ -27,6 +27,7 @@ type EduProduct struct {
 	SaleVolume  int32  `form:"saleVolume,required" json:"saleVolume,required" query:"saleVolume,required"`
 	Inventory   int32  `form:"inventory,required" json:"inventory,required" query:"inventory,required"`
 	Provider    string `form:"provider,required" json:"provider,required" query:"provider,required"`
+	Price       int32  `form:"price,required" json:"price,required" query:"price,required"`
 }
 
 type File struct {
@@ -102,6 +103,7 @@ type ProductDetail struct {
 	Inventory   int32    `form:"inventory,required" json:"inventory,required" query:"inventory,required"`
 	SaleVolume  int32    `form:"saleVolume,required" json:"saleVolume,required" query:"saleVolume,required"`
 	Files       []*File  `form:"files,required" json:"files,required" query:"files,required"`
+	Keywords    string   `form:"keywords,required" json:"keywords,required" query:"keywords,required"`
 }
 
 type ProductEditInfo struct {
@@ -115,6 +117,7 @@ type ProductEditInfo struct {
 	BannerImgs    []string `form:"bannerImgs,required" json:"bannerImgs,required" query:"bannerImgs,required"`
 	AfterSaleText string   `form:"afterSaleText,required" json:"afterSaleText,required" query:"afterSaleText,required"`
 	Inventory     int32    `form:"inventory,required" json:"inventory,required" query:"inventory,required"`
+	Keywords      string   `form:"keywords,required" json:"keywords,required" query:"keywords,required"`
 }
 
 type PurchaseRecord struct {
@@ -131,6 +134,7 @@ type PurchaseRecord struct {
 type PurchaseReq struct {
 	UserId    int64 `form:"userId,required" json:"userId,required" query:"userId,required"`
 	ProductId int64 `form:"productId,required" json:"productId,required" query:"productId,required"`
+	Price     int32 `form:"price,required" json:"price,required" query:"price,required"`
 }
 
 type PurchaseResp struct {
@@ -188,6 +192,7 @@ type UpsertEduProductReq struct {
 	AfterSaleText string   `form:"afterSaleText,required" json:"afterSaleText,required" query:"afterSaleText,required"`
 	FileName      string   `form:"fileName,required" json:"fileName,required" query:"fileName,required"`
 	FileId        int64    `form:"fileId,required" json:"fileId,required" query:"fileId,required"`
+	Keywords      string   `form:"keywords,required" json:"keywords,required" query:"keywords,required"`
 }
 
 type UpsertEduProductResp struct {
