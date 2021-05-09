@@ -11,7 +11,7 @@ var Logger *logger.Logger
 
 func InitLogger() {
 	//制定是否控制台打印 默认为true
-	fileName := fmt.Sprintf("../logs/" + time.Now().Format("2006_01_02") + ".log")
+	fileName := fmt.Sprintf("../" + time.Now().Format("2006_01_02") + ".log")
 
 	lf, err := os.OpenFile(fileName, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0660)
 	if err != nil {
