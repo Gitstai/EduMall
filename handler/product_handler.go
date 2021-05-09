@@ -50,6 +50,7 @@ func SearchEduProducts(c *gin.Context) {
 		tmp.CreatedTime = p.CreateTime.Unix()
 		tmp.SaleVolume = p.SaleVolume
 		tmp.Inventory = p.Inventory
+		tmp.Price = p.Price
 
 		res = append(res, tmp)
 	}
@@ -86,6 +87,7 @@ func UpsertEduProduct(c *gin.Context) {
 			AfterSaleText: req.AfterSaleText,
 			DescText:      req.ProductDesc,
 			DescImg:       strings.Join(req.BannerImgs, ";"),
+			Keywords:      req.Keywords,
 		}); err != nil {
 			logs.Logger.Errorf("func:%v, err:%v", "model.UpdateTProduct", err)
 			ErrorHandler(c, config.ErrCodeErrBusinessException, config.ErrMsgBusinessException)
@@ -102,6 +104,7 @@ func UpsertEduProduct(c *gin.Context) {
 			AfterSaleText: req.AfterSaleText,
 			DescText:      req.ProductDesc,
 			DescImg:       strings.Join(req.BannerImgs, ";"),
+			Keywords:      req.Keywords,
 		})
 		if err != nil {
 			logs.Logger.Errorf("func:%v, err:%v", "model.InsertTProduct", err)
@@ -179,6 +182,7 @@ func GetProductDetail(c *gin.Context) {
 		BannerImgs:  strings.Split(prods[0].DescImg, ";"),
 		Inventory:   prods[0].Inventory,
 		SaleVolume:  prods[0].SaleVolume,
+		Keywords:    prods[0].Keywords,
 		Files:       make([]*dto.File, 0),
 	}
 
@@ -242,6 +246,7 @@ func GetProductEditInfo(c *gin.Context) {
 		Inventory:     prods[0].Inventory,
 		Files:         make([]*dto.File, 0),
 		AfterSaleText: prods[0].AfterSaleText,
+		Keywords:      prods[0].Keywords,
 	}
 
 	files, err := model.GetTProductFile(&model.TProductFile{
