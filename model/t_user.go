@@ -47,7 +47,7 @@ func IncreaseBalance(userId int64, amount int32) error {
 }
 
 func DecreaseBalance(userId int64, amount int32) error {
-	if amount <= 0 {
+	if amount < 0 {
 		return errors.New("illegal amount")
 	}
 	err := dal.EduDB.Table("t_user").Where("id = ?", userId).Update("balance", gorm.Expr("balance - ?", amount)).Error
