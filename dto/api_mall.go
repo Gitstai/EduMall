@@ -28,6 +28,7 @@ type EduProduct struct {
 	Inventory   int32  `form:"inventory,required" json:"inventory,required" query:"inventory,required"`
 	Provider    string `form:"provider,required" json:"provider,required" query:"provider,required"`
 	Price       int32  `form:"price,required" json:"price,required" query:"price,required"`
+	Status      int32  `form:"status,required" json:"status,required" query:"status,required"`
 }
 
 type File struct {

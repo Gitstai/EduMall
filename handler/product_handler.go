@@ -51,6 +51,7 @@ func SearchEduProducts(c *gin.Context) {
 		tmp.SaleVolume = p.SaleVolume
 		tmp.Inventory = p.Inventory
 		tmp.Price = p.Price
+		tmp.Status = int32(p.Status)
 
 		res = append(res, tmp)
 	}
