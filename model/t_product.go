@@ -5,6 +5,7 @@ import (
 	"EduMall/dal"
 	"EduMall/tools"
 	"errors"
+	"github.com/jinzhu/gorm"
 	"time"
 )
 
@@ -82,5 +83,10 @@ func UpdateTProduct(data *TProduct) error {
 		return errors.New("update no data")
 	}
 	err := dal.EduDB.Table("t_product").Where("id = ?", data.Id).Update(data).Error
+	return err
+}
+
+func IncreaseSaleVolume(productId int64, volume int32) error {
+	err := dal.EduDB.Table("t_product").Where("id = ?", productId).Update("sale_volume", gorm.Expr("sale_volume + ?", volume)).Error
 	return err
 }

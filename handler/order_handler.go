@@ -207,6 +207,13 @@ func Purchase(c *gin.Context) {
 		return
 	}
 
+	//增加销量
+	if err = model.IncreaseSaleVolume(product.Id, 1); err != nil {
+		logs.Logger.Errorf("func:=model.IncreaseSaleVolume, err:%v", err)
+		ErrorHandler(c, config.ErrCodeErrBusinessException, config.ErrMsgBusinessException)
+		return
+	}
+
 	DataHandler(c, nil)
 	return
 }
